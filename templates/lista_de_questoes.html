@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<main>
+
+    <ul class="page-nav">
+    </ul>
+
+    <h2>Lista de questões</h2>
+
+    <a class="btn btn-success" href="{{ url_for("nova_questao") }}"> Cadastrar</a>
+    <a class="btn btn-success" open-modal>Gerar prova</a>
+
+
+    <dialog modal>
+		<small>Trolagem!!!</small>
+        <img src="/static/BIGCHUNGUS.gif">
+		<button close-modal>Fechar</button>
+	</dialog>
+
+
+    <form action="/provas/questoes" method="POST">
+    <small>Pesquisar por: </small>
+    <select name="selectedOption">
+        {% for option in options %}
+            <option> {{ option.nome }}</option>
+        {% endfor %}
+    </select>
+    <small>onde conter: </small>
+    <input type="text" placeholder="palavra-chave" name="chave">
+
+    <button type="submit">procurar</button>
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nro.</th>
+                <th>Categoria(s)</th>
+                <th>Enunciado</th>
+                <th class="actions">⌘</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for questao in questoes %}
+            <tr>
+                <td>{{questao.numero}}</td>
+                <td>{{questao.categoria}}</td>
+                <td>{{questao.enunciado}}</td>
+                <td>
+                    <!-- botões de ação -->
+                    <a href="{{ url_for("excluir_questao", q_id=questao._id) }}" class="btn btn-danger btn-sm"><i class="icon-trash"></i> Excluir</a>
+                    <a href="{{ url_for('questao', q_id=questao._id) }}" class="btn btn-info btn-sm"><i class="icon-pencil"></i> Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+
+<script>
+	const openModal = document.querySelector("[open-modal]")
+	const closeModal = document.querySelector("[close-modal]")
+	const modal = document.querySelector("[modal]")
+
+	openModal.addEventListener("click", () => {
+		modal.showModal()
+	})
+
+	closeModal.addEventListener("click", () => {
+		modal.close()
+	})
+</script>
+
+{% endblock %}

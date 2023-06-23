@@ -1,0 +1,41 @@
+:root{
+    --item-color: rgb(2, 2, 123);
+    --action-color: rgb(169, 32, 55);
+}
+th.actions{
+    color: var(--action-color);
+}
+td.actions > *{
+    padding: 3px 6px;
+}
+.page-nav{
+    display: flex;
+    gap: 10px;
+    padding: 0;
+}
+.page-nav li{
+    list-style: none;
+}
+.crud{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+.crud button{
+    justify-self: left;
+}
+.crud input:valid{
+    border: 1px solid #b6b8b2;
+}
+.crud input:invalid{
+    border: 1px solid #ff000059;
+}
+.crud label{
+    color: var(--item-color);
+    font-variant: small-caps;
+    font-size: 1.3em;
+    padding: 5px 0px;
+}
+.crud.c2{
+    grid-template-columns: 1fr 1fr;
+}
