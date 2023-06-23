@@ -1,5 +1,5 @@
 from flask import (
-    Flask, render_template, request, redirect, url_for, flash
+    Flask, render_template, request, redirect, url_for
 )
 from database import db_provas
 from bson import ObjectId
@@ -8,14 +8,16 @@ app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.config['SECRET_KEY'] = 'secret'
 
 
+#########
+# ROTAS #
+#########
 
-#OK
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-#OK
 @app.route('/provas/questoes', methods=['GET', 'POST'])
 def questoes():
     if request.method == 'GET':
@@ -28,13 +30,16 @@ def questoes():
         options = list(db_provas.options.find())
 
         if option == 'titulo':
-            option = 'enunciado'
+            option = 'enunciado'  # No banco o titulo é enunciado
 
-        print(option)
+        print("Opção de pesquisa: " + option)
 
         questoes_list = list(db_provas.questoes.find(
-            {option: {'$regex': palavra_chave, '$options': 'i'}}
-        ))
+            {
+                option: {'$regex': palavra_chave, '$options': 'i'}
+            }
+        )
+        )
 
         return render_template('lista_de_questoes.html', questoes=questoes_list, options=options)
 
@@ -118,6 +123,7 @@ def questao(q_id):
         }
 
         db_provas.questoes.update_one({"_id": ObjectId(q_id)}, {"$set": updated_question})
+
         return redirect(url_for('questoes'))
 
 
