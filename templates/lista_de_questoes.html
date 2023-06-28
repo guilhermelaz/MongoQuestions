@@ -7,10 +7,11 @@
 
     <h2>Lista de questões</h2>
     <a class="btn btn-success" href="{{ url_for("nova_questao") }}"> Cadastrar</a>
-    <a class="btn btn-success" open-modal>Gerar prova</a>
 
+
+    <a class="btn btn-success" open-modal href="{{ url_for('gerar_prova') }}">Gerar prova</a>
     <dialog modal>
-		<small>Trolagem!!!</small>
+		<small>prova gerada!!!</small>
         <img src="/static/BIGCHUNGUS.gif">
 		<button close-modal>Fechar</button>
 	</dialog>
@@ -43,7 +44,11 @@
             {% for questao in questoes %}
             <tr>
                 <td>{{questao.numero}}</td>
-                <td>{{questao.categoria}}</td>
+                <td>
+                    {% for categoria in questao.categoria %}
+                        {{categoria}} <br>
+                    {% endfor %}
+                </td>
                 <td>{{questao.enunciado}}</td>
                 <td>
                     <!-- botões de ação -->

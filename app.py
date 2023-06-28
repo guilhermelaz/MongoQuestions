@@ -1,8 +1,16 @@
+import random
+
 from flask import (
-    Flask, render_template, request, redirect, url_for
+    Flask, render_template, request, redirect, url_for, current_app, send_file
 )
 from database import db_provas
 from bson import ObjectId
+
+from docx import Document
+from docxtpl import DocxTemplate
+
+import os
+
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.config['SECRET_KEY'] = 'secret'
@@ -125,6 +133,29 @@ def questao(q_id):
         db_provas.questoes.update_one({"_id": ObjectId(q_id)}, {"$set": updated_question})
 
         return redirect(url_for('questoes'))
+
+
+@app.route('/provas/gerar', methods=['GET', 'POST'])
+def gerar_prova():
+    if request.method == 'GET':
+
+        questoes = list(db_provas.questoes.find())
+        random.shuffle(questoes)
+        questoes = questoes[:5]
+
+        template_path = os.path.join(current_app.root_path, 'templates', 'prova.docx')
+        template = DocxTemplate(template_path)
+
+        context = {
+            'questoes': questoes
+        }
+
+        template.render(context)
+
+        document_path = os.path.join(current_app.root_path, 'static', 'prova.docx')
+        template.save(document_path)
+        return send_file(document_path, as_attachment=True)
+        # return render_template('gerar_prova.html', questoes=questoes)
 
 
 if __name__ == '__main__':
