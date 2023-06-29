@@ -6,16 +6,17 @@
     <ul class="page-nav"></ul>
 
     <h2>Lista de questões</h2>
+    <br>
     <a class="btn btn-success" href="{{ url_for("nova_questao") }}"> Cadastrar</a>
-
-
     <a class="btn btn-success" open-modal href="{{ url_for('gerar_prova') }}">Gerar prova</a>
     <dialog modal>
-		<small>prova gerada!!!</small>
-        <img src="/static/BIGCHUNGUS.gif">
+        <img src="/static/BIGCHUNGUS.gif" style="width: 350px">
+        <p style="font-size: 48px"><b>Prova Gerada!!!</b></p>
 		<button close-modal>Fechar</button>
 	</dialog>
 
+    <br>
+    <br>
 
     <form action="/provas/questoes" method="POST">
         <small>Pesquisar por: </small>
@@ -45,15 +46,13 @@
             <tr>
                 <td>{{questao.numero}}</td>
                 <td>
-                    {% for categoria in questao.categoria %}
-                        {{categoria}} <br>
-                    {% endfor %}
+                    {% for categoria in questao.categoria %}{{categoria}}{% endfor %}
                 </td>
                 <td>{{questao.enunciado}}</td>
                 <td>
                     <!-- botões de ação -->
                     <a href="{{ url_for("excluir_questao", q_id=questao._id) }}" class="btn btn-danger btn-sm"><i class="icon-trash"></i> Excluir</a>
-                    <a href="{{ url_for('questao', q_id=questao._id) }}" class="btn btn-info btn-sm"><i class="icon-pencil"></i> Editar</a>
+                    <a href="{{ url_for('questao', q_id=questao._id) }}" class="btn btn-info btn-sm"><i class="bi bi-eye"></i> Inspecionar</a>
                 </td>
             </tr>
             {% endfor %}
